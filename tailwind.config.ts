@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        tajawal: ['Tajawal', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -46,6 +49,14 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          light: "hsl(var(--gold-light))",
+        },
+        clinic: {
+          blue: "hsl(var(--clinic-blue))",
+          "blue-light": "hsl(var(--clinic-blue-light))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
