@@ -2,46 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
 
 @layer base {
   :root {
-    --background: 210 20% 99%;
-    --foreground: 215 25% 15%;
+    --background: 0 0% 100%;
+    --foreground: 210 40% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card-foreground: 210 40% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 15%;
+    --popover-foreground: 210 40% 12%;
 
-    --primary: 205 65% 45%;
+    --primary: 199 100% 36%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 30% 95%;
-    --secondary-foreground: 215 25% 15%;
+    --secondary: 195 50% 95%;
+    --secondary-foreground: 210 40% 12%;
 
     --muted: 210 20% 96%;
-    --muted-foreground: 215 15% 50%;
+    --muted-foreground: 210 15% 45%;
 
-    --accent: 42 70% 55%;
-    --accent-foreground: 215 25% 15%;
+    --accent: 195 80% 42%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
     --border: 210 20% 90%;
-    --input: 210 20% 90%;
-    --ring: 205 65% 45%;
+    --input: 210 20% 88%;
+    --ring: 199 100% 36%;
 
     --radius: 0.75rem;
 
-    --gold: 42 70% 55%;
-    --gold-light: 42 60% 75%;
-    --clinic-blue: 205 65% 45%;
-    --clinic-blue-light: 205 50% 92%;
+    --navy: 210 50% 15%;
+    --navy-foreground: 210 20% 92%;
+    --teal: 180 60% 40%;
+    --cyan-light: 195 60% 96%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -54,18 +52,52 @@ All colors MUST be HSL.
   }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
-
-body {
-  font-family: 'Tajawal', sans-serif;
-}
-
 @layer base {
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
+    font-family: 'Tajawal', sans-serif;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out both;
+  }
+  .animate-fade-up-delay {
+    animation: fadeUp 0.6s ease-out 0.2s both;
+  }
+  .animate-fade-up-delay-2 {
+    animation: fadeUp 0.6s ease-out 0.4s both;
+  }
+  .animate-count {
+    animation: countIn 0.8s ease-out both;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes countIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
