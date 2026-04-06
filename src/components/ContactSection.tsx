@@ -1,8 +1,10 @@
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { useState } from "react";
+import { useClinicData } from "@/hooks/useClinicData";
 
 const ContactSection = () => {
   const [sent, setSent] = useState(false);
+  const { phone, address, email, workingHours } = useClinicData();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,54 +45,12 @@ const ContactSection = () => {
           </form>
 
           <div className="space-y-6">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                <MapPin className="text-primary" size={22} />
-              </div>
-              <div>
-                <h4 className="font-bold text-foreground font-tajawal">العنوان</h4>
-                <p className="text-muted-foreground font-tajawal text-sm">طريق الملك فهد، حي العليا، الرياض</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                <Phone className="text-primary" size={22} />
-              </div>
-              <div>
-                <h4 className="font-bold text-foreground font-tajawal">الهاتف</h4>
-                <p className="text-muted-foreground font-tajawal text-sm" dir="ltr">+966 9200 12345</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                <Mail className="text-primary" size={22} />
-              </div>
-              <div>
-                <h4 className="font-bold text-foreground font-tajawal">البريد الإلكتروني</h4>
-                <p className="text-muted-foreground font-tajawal text-sm" dir="ltr">info@al-ibtisama.com</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                <Clock className="text-primary" size={22} />
-              </div>
-              <div>
-                <h4 className="font-bold text-foreground font-tajawal">أوقات العمل</h4>
-                <p className="text-muted-foreground font-tajawal text-sm">السبت - الخميس: ٩ صباحاً - ٩ مساءً</p>
-              </div>
-            </div>
-
+            <InfoRow icon={MapPin} title="العنوان" value={address} />
+            <InfoRow icon={Phone} title="الهاتف" value={phone} dir="ltr" />
+            <InfoRow icon={Mail} title="البريد الإلكتروني" value={email} dir="ltr" />
+            <InfoRow icon={Clock} title="أوقات العمل" value={workingHours} />
             <div className="rounded-2xl overflow-hidden border border-border h-56 bg-muted flex items-center justify-center mt-6">
-              <iframe
-                title="موقع العيادة"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.6!2d46.6753!3d24.7136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDQyJzQ5LjAiTiA0NsijMCcxMy4xIkU!5e0!3m2!1sar!2ssa!4v1"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+              <iframe title="موقع العيادة" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.6!2d46.6753!3d24.7136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDQyJzQ5LjAiTiA0NsijMCcxMy4xIkU!5e0!3m2!1sar!2ssa!4v1" width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
             </div>
           </div>
         </div>
@@ -98,5 +58,17 @@ const ContactSection = () => {
     </section>
   );
 };
+
+const InfoRow = ({ icon: Icon, title, value, dir }: { icon: any; title: string; value: string; dir?: string }) => (
+  <div className="flex items-start gap-4">
+    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+      <Icon className="text-primary" size={22} />
+    </div>
+    <div>
+      <h4 className="font-bold text-foreground font-tajawal">{title}</h4>
+      <p className="text-muted-foreground font-tajawal text-sm" dir={dir}>{value}</p>
+    </div>
+  </div>
+);
 
 export default ContactSection;
