@@ -14,7 +14,314 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          booking_date: string | null
+          booking_time: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          patient_name: string
+          patient_phone: string
+          service_id: string | null
+          service_name: string | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          booking_date?: string | null
+          booking_time?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          patient_name: string
+          patient_phone: string
+          service_id?: string | null
+          service_name?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          booking_date?: string | null
+          booking_time?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          patient_name?: string
+          patient_phone?: string
+          service_id?: string | null
+          service_name?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clinic_info: {
+        Row: {
+          address: string | null
+          clinic_name: string | null
+          created_at: string
+          email: string | null
+          google_maps_link: string | null
+          id: number
+          phone: string | null
+          updated_at: string
+          whatsapp: string | null
+          working_hours: Json | null
+        }
+        Insert: {
+          address?: string | null
+          clinic_name?: string | null
+          created_at?: string
+          email?: string | null
+          google_maps_link?: string | null
+          id?: number
+          phone?: string | null
+          updated_at?: string
+          whatsapp?: string | null
+          working_hours?: Json | null
+        }
+        Update: {
+          address?: string | null
+          clinic_name?: string | null
+          created_at?: string
+          email?: string | null
+          google_maps_link?: string | null
+          id?: number
+          phone?: string | null
+          updated_at?: string
+          whatsapp?: string | null
+          working_hours?: Json | null
+        }
+        Relationships: []
+      }
+      doctors: {
+        Row: {
+          bio: string | null
+          created_at: string
+          experience: string | null
+          id: string
+          name: string
+          photo_url: string | null
+          sort_order: number | null
+          specialty: string | null
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          experience?: string | null
+          id?: string
+          name: string
+          photo_url?: string | null
+          sort_order?: number | null
+          specialty?: string | null
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          experience?: string | null
+          id?: string
+          name?: string
+          photo_url?: string | null
+          sort_order?: number | null
+          specialty?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      gallery: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          image_url: string
+          sort_order: number | null
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_url: string
+          sort_order?: number | null
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string
+          sort_order?: number | null
+        }
+        Relationships: []
+      }
+      hero_section: {
+        Row: {
+          created_at: string
+          cta_text: string | null
+          hero_image: string | null
+          id: number
+          main_title: string | null
+          subtitle: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          cta_text?: string | null
+          hero_image?: string | null
+          id?: number
+          main_title?: string | null
+          subtitle?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          cta_text?: string | null
+          hero_image?: string | null
+          id?: number
+          main_title?: string | null
+          subtitle?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          created_at: string
+          id: string
+          is_approved: boolean | null
+          name: string
+          stars: number | null
+          text: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_approved?: boolean | null
+          name: string
+          stars?: number | null
+          text: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_approved?: boolean | null
+          name?: string
+          stars?: number | null
+          text?: string
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration: string | null
+          icon: string | null
+          id: string
+          image_url: string | null
+          is_available: boolean | null
+          price: string | null
+          sort_order: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          icon?: string | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean | null
+          price?: string | null
+          sort_order?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          icon?: string | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean | null
+          price?: string | null
+          sort_order?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      social_media: {
+        Row: {
+          created_at: string
+          id: number
+          instagram: string | null
+          snapchat: string | null
+          tiktok: string | null
+          twitter: string | null
+          updated_at: string
+          youtube: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          instagram?: string | null
+          snapchat?: string | null
+          tiktok?: string | null
+          twitter?: string | null
+          updated_at?: string
+          youtube?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          instagram?: string | null
+          snapchat?: string | null
+          tiktok?: string | null
+          twitter?: string | null
+          updated_at?: string
+          youtube?: string | null
+        }
+        Relationships: []
+      }
+      stats_bar: {
+        Row: {
+          clients_count: string | null
+          created_at: string
+          id: number
+          satisfaction_rate: string | null
+          updated_at: string
+          years_experience: string | null
+        }
+        Insert: {
+          clients_count?: string | null
+          created_at?: string
+          id?: number
+          satisfaction_rate?: string | null
+          updated_at?: string
+          years_experience?: string | null
+        }
+        Update: {
+          clients_count?: string | null
+          created_at?: string
+          id?: number
+          satisfaction_rate?: string | null
+          updated_at?: string
+          years_experience?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
