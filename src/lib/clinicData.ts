@@ -1,12 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export interface DoctorData {
-  id?: string;
-  name: string;
-  specialty: string;
-  exp: string;
-}
-
 export interface ServiceData {
   id?: string;
   icon: string;
@@ -14,22 +7,39 @@ export interface ServiceData {
   desc: string;
   duration: string;
   price: string;
+  image_url?: string;
+  is_available?: boolean;
+}
+
+export interface DoctorData {
+  id?: string;
+  name: string;
+  specialty: string;
+  exp: string;
+  photo_url?: string;
+  bio?: string;
 }
 
 export interface ClinicData {
+  clinic_name: string;
   phone: string;
+  whatsapp: string;
   address: string;
   email: string;
   workingHours: string;
+  google_maps_link: string;
   services: ServiceData[];
   doctors: DoctorData[];
 }
 
 const defaults: ClinicData = {
+  clinic_name: "عيادة الابتسامة",
   phone: "+966 9200 12345",
+  whatsapp: "+966 9200 12345",
   address: "طريق الملك فهد، حي العليا، الرياض",
   email: "info@al-ibtisama.com",
   workingHours: "السبت - الخميس: ٩ صباحاً - ٩ مساءً",
+  google_maps_link: "",
   services: [
     { icon: "🦷", title: "تبييض الأسنان", desc: "جلسة واحدة تمنحك ابتسامة مشرقة", duration: "١ ساعة", price: "٥٠٠ ريال" },
     { icon: "🔧", title: "حشو الأسنان", desc: "علاج التسوس بأحدث المواد", duration: "٤٥ دقيقة", price: "٢٠٠ ريال" },
@@ -45,7 +55,10 @@ const defaults: ClinicData = {
   ],
 };
 
-// Fetch clinic data from Supabase, fallback to defaults
+export function getClinicData(): ClinicData {
+  return { ...defaults };
+}
+
 export async function fetchClinicData(): Promise<ClinicData> {
   try {
     const [infoRes, servicesRes, doctorsRes] = await Promise.all([
@@ -60,89 +73,43 @@ export async function fetchClinicData(): Promise<ClinicData> {
 
     if (!info && !services && !doctors) return { ...defaults };
 
+    const wh = info?.working_hours;
+    let workingHoursStr = defaults.workingHours;
+    if (typeof wh === "string") workingHoursStr = wh;
+    else if (wh && typeof wh === "object") workingHoursStr = JSON.stringify(wh);
+
     return {
+      clinic_name: info?.clinic_name ?? defaults.clinic_name,
       phone: info?.phone ?? defaults.phone,
+      whatsapp: info?.whatsapp ?? defaults.whatsapp,
       address: info?.address ?? defaults.address,
       email: info?.email ?? defaults.email,
-      workingHours: info?.working_hours ?? defaults.workingHours,
+      workingHours: workingHoursStr,
+      google_maps_link: info?.google_maps_link ?? "",
       services: services && services.length > 0
         ? services.map((s: any) => ({
             id: s.id,
-            icon: s.icon,
+            icon: s.icon ?? "🦷",
             title: s.title,
-            desc: s.description,
-            duration: s.duration,
-            price: s.price,
+            desc: s.description ?? "",
+            duration: s.duration ?? "",
+            price: s.price ?? "",
+            image_url: s.image_url ?? "",
+            is_available: s.is_available ?? true,
           }))
         : defaults.services,
       doctors: doctors && doctors.length > 0
         ? doctors.map((d: any) => ({
             id: d.id,
             name: d.name,
-            specialty: d.specialty,
-            exp: d.experience,
+            specialty: d.specialty ?? "",
+            exp: d.experience ?? "",
+            photo_url: d.photo_url ?? "",
+            bio: d.bio ?? "",
           }))
         : defaults.doctors,
     };
   } catch {
     return { ...defaults };
   }
-}
-
-// Save clinic data to Supabase
-export async function saveClinicDataToSupabase(data: ClinicData) {
-  // Upsert clinic_info (single row)
-  await supabase.from("clinic_info").upsert({
-    id: 1,
-    phone: data.phone,
-    address: data.address,
-    email: data.email,
-    working_hours: data.workingHours,
-  });
-
-  // Delete and re-insert services
-  await supabase.from("services").delete().neq("id", 0);
-  if (data.services.length > 0) {
-    await supabase.from("services").insert(
-      data.services.map((s, i) => ({
-        icon: s.icon,
-        title: s.title,
-        description: s.desc,
-        duration: s.duration,
-        price: s.price,
-        sort_order: i,
-      }))
-    );
-  }
-
-  // Delete and re-insert doctors
-  await supabase.from("doctors").delete().neq("id", 0);
-  if (data.doctors.length > 0) {
-    await supabase.from("doctors").insert(
-      data.doctors.map((d, i) => ({
-        name: d.name,
-        specialty: d.specialty,
-        experience: d.exp,
-        sort_order: i,
-      }))
-    );
-  }
-
-  window.dispatchEvent(new Event("clinic-data-updated"));
-}
-
-// Legacy localStorage functions for backward compatibility
-const STORAGE_KEY = "clinic_admin_data";
-
-export function getClinicData(): ClinicData {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return { ...defaults, ...JSON.parse(raw) };
-  } catch {}
-  return { ...defaults };
-}
-
-export function saveClinicData(data: ClinicData) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  window.dispatchEvent(new Event("clinic-data-updated"));
 }
