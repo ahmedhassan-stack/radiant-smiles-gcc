@@ -1,11 +1,21 @@
-import { useState, useEffect, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 import { getClinicData, type ClinicData } from "@/lib/clinicData";
 
+let cached: ClinicData = getClinicData();
+
 function subscribe(cb: () => void) {
-  window.addEventListener("clinic-data-updated", cb);
-  return () => window.removeEventListener("clinic-data-updated", cb);
+  const handler = () => {
+    cached = getClinicData();
+    cb();
+  };
+  window.addEventListener("clinic-data-updated", handler);
+  return () => window.removeEventListener("clinic-data-updated", handler);
+}
+
+function getSnapshot() {
+  return cached;
 }
 
 export function useClinicData(): ClinicData {
-  return useSyncExternalStore(subscribe, getClinicData, getClinicData);
+  return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 }
